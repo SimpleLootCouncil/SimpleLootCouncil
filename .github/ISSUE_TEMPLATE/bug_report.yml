@@ -1,0 +1,45 @@
+name: Bug report
+description: Something in SimpleLootCouncil went wrong
+labels: ["bug"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: SLC version
+      description: Shown at the top of `/slc help`, or in WowUp.
+      placeholder: "0.42.21"
+    validations:
+      required: true
+  - type: dropdown
+    id: game
+    attributes:
+      label: Game
+      options:
+        - Retail
+        - WoW Forever
+    validations:
+      required: true
+  - type: dropdown
+    id: role
+    attributes:
+      label: Your role when it happened
+      options:
+        - Loot Master
+        - Council member
+        - Raider
+        - Solo / testing
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: /slc log
+      description: Type `/slc log` in game soon after it happens and paste what it shows. Any Lua error text (BugSack) helps too.
+      render: text

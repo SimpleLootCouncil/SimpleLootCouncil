@@ -3,7 +3,8 @@
 <p align="center">
   <a href="https://discord.gg/nNRfxQApEB"><b>Discord</b></a> &nbsp;·&nbsp;
   <a href="https://ko-fi.com/laxxz"><b>Ko-fi</b></a> &nbsp;·&nbsp;
-  <a href="https://github.com/SimpleLootCouncil/SimpleLootCouncil-Beta/releases"><b>Releases</b></a>
+  <a href="https://github.com/SimpleLootCouncil/SimpleLootCouncil/releases"><b>Releases</b></a> &nbsp;·&nbsp;
+  <a href="https://github.com/SimpleLootCouncil/SimpleLootCouncil/issues"><b>Report a bug</b></a>
 </p>
 
 **SimpleLootCouncil** is a loot council for **Retail and Forever** raids. Where there is no master looter, the council votes on items sitting in a raider's bags inside the two-hour trade window. Raiders answer, the council votes, the loot master awards, and the holder's trade window fills itself.
@@ -73,6 +74,8 @@ Every string is ready to translate. Translators are deeply desired, and any inte
 Install it with WowUp: **Install from URL** with this repo's address. Everyone who takes part needs it. The group leader runs loot by default. Add your council with `/slc council add Name-Realm`, and type `/slc` for settings or `/slc help` for every command.
 
 ## Support
+
+Found a bug? [Open an issue](https://github.com/SimpleLootCouncil/SimpleLootCouncil/issues/new/choose) with your version and what `/slc log` shows.
 
 SimpleLootCouncil is free. If it saves your raid some arguing, you can support its development on [Ko-fi](https://ko-fi.com/laxxz).
 
