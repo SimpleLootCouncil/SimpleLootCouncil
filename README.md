@@ -10,14 +10,14 @@
 
 ## Bulletproof Loot Sessions
 
-Never lose another loot session due to a reload, relog, or crash - SimpleLootCouncil has a robust run-recovery caching system that ensures you never have to restart a loot session, or miss a raider with a session start again.
+Never lose another loot session due to a reload, relog, or crash - SimpleLootCouncil brings the session back, so you never have to restart a loot session or start one again for a raider who missed it.
 
 - **Reloads** - raider, council or loot master. The window comes back with every answer and vote.
-- **Relogs and crashes** - log back in and the run is rebuilt from what the rest of the group still holds.
+- **Relogs and crashes** - log back in and your run is restored.
 - **Loading screens** - portals, hearths and zoning close your windows. SLC reopens them.
 - **Loot master swaps** - hand loot over mid-run. The new loot master gets the whole run.
 
-Awards made while you were reloading are held and applied once your run arrives, in the order they were made.
+Nothing awarded while you were away is lost.
 
 ### Built for Retail Loot and WoW Forever
 
@@ -31,7 +31,7 @@ One window lists everything you owe, grouped by player, each copy with its own t
 
 ### Light on Your Raid
 
-Answers from a 40-player raid cost about 0.04 ms each. The council table redraws in place, at most a few times a second, and addon messages are paced so other addons are never crowded out.
+Answers from a 40-player raid cost about 0.04 ms each. SLC stays light on your frame rate and never crowds out other addons.
 
 ### A Council You Can Defend
 
@@ -60,7 +60,7 @@ Import award history from RCLootCouncil or Loothing, from saved data or a pasted
 
 ## Languages
 
-SimpleLootCouncil runs on every World of Warcraft client language: rolls are read from chat, plurals and punctuation follow your language, and Cyrillic, Korean and Chinese text draws in the right font.
+SimpleLootCouncil runs on every World of Warcraft client language: rolls are recognised, plurals and punctuation follow your language, and Cyrillic, Korean and Chinese text draws in the right font.
 
 English (enUS, enGB) · Deutsch (deDE) · Français (frFR) · Español (esES, esMX) · Italiano (itIT) · Português (ptBR) · Русский (ruRU) · 한국어 (koKR) · 简体中文 (zhCN) · 繁體中文 (zhTW)
 
