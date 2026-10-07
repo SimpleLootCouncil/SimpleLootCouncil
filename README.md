@@ -21,7 +21,7 @@ On **WoW Forever**, master loot is back. The loot master holds the drop, the cou
 
 SimpleLootCouncil gives you compact frame options for the council voting frame and the loot response frames, taking up less screen real estate, making it easier to keep playing while managing loot.
 
-## Easy on Your Raid
+## Performant at Any Scale
 
 Answers from a 40-player raid cost about 0.04 ms each. The council table redraws in place, at most a few times a second, and addon messages are paced so other addons are never crowded out.
 
