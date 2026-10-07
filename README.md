@@ -79,4 +79,5 @@ All rights reserved - see [LICENSE](LICENSE). You are welcome to use the addon;
 redistributing it or reusing its source needs a word first.
 
 https://www.curseforge.com/wow/addons/simplelootcouncil
+
 https://addons.wago.io/addons/simplelootcouncil
