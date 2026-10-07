@@ -56,6 +56,8 @@ All interface text is English for now. Full translation is the next goal for SLC
 
 Every string is ready to translate. Translators are deeply desired, and any interested parties are encouraged to join the [Discord](https://discord.gg/nNRfxQApEB)!
 
+## SimpleLootCouncil is currently in public beta testing, if you encounter issues please report them.
+
 ## Getting Started
 
 Install it with WowUp: **Install from URL** with this repo's address. Everyone who takes part needs it. The group leader runs loot by default. Add your council with `/slc council add Name-Realm`, and type `/slc` for settings or `/slc help` for every command.
