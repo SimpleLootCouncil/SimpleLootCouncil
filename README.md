@@ -1,7 +1,7 @@
 <p align="center"><img src="media/banner.png" alt="Simple Loot Council"></p>
 
 <p align="center">
-  <a href="https://discord.gg/nNRfxQApEB"><img src="media/button-discord.png" alt="Discord"></a>
+  <a href="https://discord.gg/mbxDrZ8uWc"><img src="media/button-discord.png" alt="Discord"></a>
   <a href="https://ko-fi.com/laxxz"><img src="media/button-kofi.png" alt="Ko-fi"></a>
   <a href="https://github.com/SimpleLootCouncil/SimpleLootCouncil/issues"><img src="media/button-issue.png" alt="Report an issue"></a>
   <a href="https://simplelootcouncil.github.io/#commands"><img src="media/button-commands.png" alt="Commands"></a>
