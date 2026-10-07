@@ -1,44 +1,31 @@
 <p align="center"><img src="media/banner.png" alt="Simple Loot Council"></p>
 
 <p align="center">
-  <a href="https://discord.gg/nNRfxQApEB"><b>Discord</b></a> &nbsp;·&nbsp;
-  <a href="https://ko-fi.com/laxxz"><b>Ko-fi</b></a> &nbsp;·&nbsp;
-  <a href="https://github.com/SimpleLootCouncil/SimpleLootCouncil/releases"><b>Releases</b></a> &nbsp;·&nbsp;
-  <a href="https://github.com/SimpleLootCouncil/SimpleLootCouncil/issues"><b>Report a bug</b></a>
+  <a href="https://discord.gg/nNRfxQApEB"><img src="media/button-discord.png" alt="Discord"></a>
+  <a href="https://ko-fi.com/laxxz"><img src="media/button-kofi.png" alt="Ko-fi"></a>
+  <a href="https://github.com/SimpleLootCouncil/SimpleLootCouncil/issues"><img src="media/button-issue.png" alt="Report an issue"></a>
+  <a href="https://simplelootcouncil.github.io/#commands"><img src="media/button-commands.png" alt="Commands"></a>
 </p>
 
 **SimpleLootCouncil** is a loot council for **Retail and Forever** raids. Where there is no master looter, the council votes on items sitting in a raider's bags inside the two-hour trade window. Raiders answer, the council votes, the loot master awards, and the holder's trade window fills itself.
 
-## Bulletproof Loot Sessions
+<p align="center"><img src="media/bulletproof-loot-sessions.png" alt="Bulletproof Loot Sessions"></p>
 
-Never lose another loot session due to a reload, relog, or crash - SimpleLootCouncil brings the session back, so you never have to restart a loot session or start one again for a raider who missed it.
-
-- **Reloads** - raider, council or loot master. The window comes back with every answer and vote.
-- **Relogs and crashes** - log back in and your run is restored.
-- **Loading screens** - portals, hearths and zoning close your windows. SLC reopens them.
-- **Loot master swaps** - hand loot over mid-run. The new loot master gets the whole run.
-
-Nothing awarded while you were away is lost.
-
-### Built for Retail Loot and WoW Forever
+## Built for Retail Loot and WoW Forever
 
 Votes happen on items still inside their trade window. When an item is awarded, its holder is told, and opening a trade with the winner fills it automatically. An award only counts as **delivered** once the item has actually changed hands.
 
 On **WoW Forever**, master loot is back. The loot master holds the drop, the council votes the same way, and the item goes straight to the winner.
 
-### Loot to Trade
+## Light on Screen Space
 
-One window lists everything you owe, grouped by player, each copy with its own trade-window clock. Owed items survive a full logout.
+SimpleLootCouncil gives you compact frame options for the council voting frame and the loot response frames, taking up less screen real estate, making it easier to keep playing while managing loot.
 
-### Light on Your Raid
+## Easy on Your Raid
 
-Answers from a 40-player raid cost about 0.04 ms each. SLC stays light on your frame rate and never crowds out other addons.
+Answers from a 40-player raid cost about 0.04 ms each. The council table redraws in place, at most a few times a second, and addon messages are paced so other addons are never crowded out.
 
-### A Council You Can Defend
-
-Every award records the council as it stood: each candidate's answer, note, roll and vote. Hover any history row to see why an item went where it did.
-
-### Bring Your History
+## Bring Your History
 
 Import award history from RCLootCouncil or Loothing, from saved data or a pasted CSV, so your council isn't starting blind.
 
@@ -61,7 +48,7 @@ Import award history from RCLootCouncil or Loothing, from saved data or a pasted
 
 ## Languages
 
-SimpleLootCouncil runs on every World of Warcraft client language: rolls are recognised, plurals and punctuation follow your language, and Cyrillic, Korean and Chinese text draws in the right font.
+SimpleLootCouncil runs on every World of Warcraft client language: rolls are read from chat, plurals and punctuation follow your language, and Cyrillic, Korean and Chinese text draws in the right font.
 
 English (enUS, enGB) · Deutsch (deDE) · Français (frFR) · Español (esES, esMX) · Italiano (itIT) · Português (ptBR) · Русский (ruRU) · 한국어 (koKR) · 简体中文 (zhCN) · 繁體中文 (zhTW)
 
@@ -78,6 +65,8 @@ Install it with WowUp: **Install from URL** with this repo's address. Everyone w
 Found a bug? [Open an issue](https://github.com/SimpleLootCouncil/SimpleLootCouncil/issues/new/choose) with your version and what `/slc log` shows.
 
 SimpleLootCouncil is free. If it saves your raid some arguing, you can support its development on [Ko-fi](https://ko-fi.com/laxxz).
+
+Written from scratch. No code from other loot addons.
 
 ## Licence
 
