@@ -70,6 +70,9 @@ SimpleLootCouncil is free. If it saves your raid some arguing, you can support i
 
 Written from scratch. No code from other loot addons.
 
+
+## Check out [SLCLauncher](https://github.com/Laxxzz/SLCLauncher) to set and forget all your wow related applications, and have them close when wow does if you want!
+
 ## Licence
 
 All rights reserved - see [LICENSE](LICENSE). You are welcome to use the addon;
