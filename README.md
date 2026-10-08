@@ -68,8 +68,11 @@ Found a bug? [Open an issue](https://github.com/SimpleLootCouncil/SimpleLootCoun
 
 SimpleLootCouncil is free. If it saves your raid some arguing, you can support its development on [Ko-fi](https://ko-fi.com/laxxz).
 
-Written from scratch. No code from other loot addons.
+## AI Use
 
+Claude and Codex were used in the development of this Addon with a custom built Addon development tool constructed from Blizzards API patch notes.
+
+No code from other loot addons.
 
 ## Check out [SLCLauncher](https://github.com/Laxxzz/SLCLauncher) to set and forget all your wow related applications, and have them close when wow does if you want!
 
