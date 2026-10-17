@@ -2,7 +2,7 @@
 
 Two things: where SimpleLootCouncil (SLC) keeps its loot history and what shape it has,
 and the file SLC now provides for the wowaudit desktop client to write sim data into.
-Written for SLC 0.43.48. [`SLC_History_Sample.lua`](SLC_History_Sample.lua), next to this file, is a complete
+Written for SLC 0.43.49. [`SLC_History_Sample.lua`](SLC_History_Sample.lua), next to this file, is a complete
 example of every table described here.
 
 ---
@@ -11,13 +11,32 @@ example of every table described here.
 
 ### Where it is
 
-```
-World of Warcraft\_retail_\WTF\Account\<ACCOUNT>\SavedVariables\SimpleLootCouncil.lua
-```
+SLC comes in two editions, and a player can have either or both. Each keeps its history
+in its own file, one global per file, account-wide (not per character). The files are in
+`World of Warcraft\_retail_\WTF\Account\<ACCOUNT>\SavedVariables\`:
 
-One global, `SimpleLootCouncilDB`, account-wide (not per character). The game writes the
-file at logout and on `/reload` only, so a raid in progress is not on disk yet.
+| Edition | File | Global |
+|---|---|---|
+| Standalone addon (`SimpleLootCouncil`) | `SimpleLootCouncil.lua` | `SimpleLootCouncilDB` |
+| EllesmereUI edition (`EllesmereUISimpleLootCouncil`) | `EllesmereUISimpleLootCouncil.lua` | `EllesmereUISimpleLootCouncilDB` |
 
+Both hold the same table with the same shape, described below. Read **every file that
+exists**: a player with one edition has one file, and a player who once ran the other
+may have an older file for it. The game writes each file at logout and on `/reload`
+only, so a raid in progress is not on disk yet.
+
+When both editions are installed, SLC combines the two tables at login and writes the
+same combined table into both files at the next logout, so either file then holds the
+full history. A file the player stopped using can be older and incomplete, which is why
+you read all of them rather than picking one. To combine files:
+
+1. Take the union of `history` (and `imported`) rows across the files, keyed by `id`.
+   The same `id` is the same award. If two copies differ, prefer the file with the
+   larger top-level `savedAt` (Unix seconds, written at logout).
+2. Drop any `id` listed in the `deleted` table. `deleted.history[<id>]` and
+   `deleted.imported[<id>]` hold the time the player deleted that row, and an older
+   file can still contain it. Rows deleted this way are already gone from the combined
+   table SLC writes, so this only matters for an older file.
 Three keys matter:
 
 | Key | What it holds |
@@ -26,7 +45,7 @@ Three keys matter:
 | `imported` | history imported from RCLootCouncil, Loothing or a pasted CSV; same row shape plus `source`. Never mixed into `history` |
 | `historySnapshots` | the whole council as it stood when each item was awarded (every candidate's answer, votes, item level), keyed `"<runId>:<session>"`. Kept 60 days |
 
-The rest of `SimpleLootCouncilDB` is settings and can be ignored. `schemaVersion` is the
+The rest of the table, apart from `savedAt` and `deleted` above, is settings and can be ignored. `schemaVersion` is the
 saved-data migration number (currently 9).
 
 ### Things to know before reading it

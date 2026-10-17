@@ -1,9 +1,18 @@
--- SimpleLootCouncil 0.43.48 - sample of WTF\Account\<ACCOUNT>\SavedVariables\SimpleLootCouncil.lua
+-- SimpleLootCouncil 0.43.49 - sample of WTF\Account\<ACCOUNT>\SavedVariables\SimpleLootCouncil.lua
 -- Only the history tables are shown; the real file holds many other settings keys.
 -- Names, items and times are illustrative; the shape and value types are exact.
 -- Every field is described in SLC_Data_Guide.md next to this file.
 SimpleLootCouncilDB = {
     ["schemaVersion"] = 9,
+
+    -- Unix seconds of the last logout that wrote this file; the larger one is newer.
+    ["savedAt"] = 1792180800,
+
+    -- Rows the player deleted, by id and when. Skip these ids if an older file still has them.
+    ["deleted"] = {
+        ["history"] = { ["1792100000-2"] = 1792170000 },
+        ["imported"] = {},
+    },
 
     -- Native history: one row per award, keyed by the row's id.
     ["history"] = {
