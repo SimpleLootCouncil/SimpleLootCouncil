@@ -2,7 +2,7 @@
 
 Two things: where SimpleLootCouncil (SLC) keeps its loot history and what shape it has,
 and the file SLC now provides for the wowaudit desktop client to write sim data into.
-Written for SLC 0.43.49. [`SLC_History_Sample.lua`](SLC_History_Sample.lua), next to this file, is a complete
+Written for SLC 0.43.53. [`SLC_History_Sample.lua`](SLC_History_Sample.lua), next to this file, is a complete
 example of every table described here.
 
 ---
@@ -28,11 +28,15 @@ only, so a raid in progress is not on disk yet.
 When both editions are installed, SLC combines the two tables at login and writes the
 same combined table into both files at the next logout, so either file then holds the
 full history. A file the player stopped using can be older and incomplete, which is why
-you read all of them rather than picking one. A file from before 0.43.49 can hold\nboth globals (the EllesmereUI file may also contain a stale `SimpleLootCouncilDB`), so\nread every table in each file whose name starts with `SimpleLootCouncilDB` or\n`EllesmereUISimpleLootCouncilDB`. To combine files:
+you read all of them rather than picking one. A file from before 0.43.49 can hold
+both globals (the EllesmereUI file may also contain a stale `SimpleLootCouncilDB`), so
+read every table in each file whose name starts with `SimpleLootCouncilDB` or
+`EllesmereUISimpleLootCouncilDB`. To combine files:
 
 1. Take the union of `history` (and `imported`) rows across the files, keyed by `id`.
    The same `id` is the same award. If two copies differ, prefer the file with the
-   larger top-level `savedAt` (Unix seconds, written at logout). Files written before\n   0.43.49 have no `savedAt`; treat them as older than any file that has one.
+   larger top-level `savedAt` (Unix seconds, written at logout). Files written before
+   0.43.49 have no `savedAt`; treat them as older than any file that has one.
 2. Drop any `id` listed in the `deleted` table. `deleted.history[<id>]` and
    `deleted.imported[<id>]` hold the time the player deleted that row, and an older
    file can still contain it. Rows deleted this way are already gone from the combined
@@ -43,7 +47,7 @@ Three keys matter:
 |---|---|
 | `history` | SLC's own awards, one row per item awarded, keyed by the row's `id` |
 | `imported` | history imported from RCLootCouncil, Loothing or a pasted CSV; same row shape plus `source`. Never mixed into `history` |
-| `historySnapshots` | the whole council as it stood when each item was awarded (every candidate's answer, votes, item level), keyed `"<runId>:<session>"`. Kept 60 days |
+| `historySnapshots` | the whole council as it stood when each item was awarded (every candidate's answer, roll, item level), keyed `"<runId>:<session>"`. Kept 60 days |
 
 The rest of the table, apart from `savedAt` and `deleted` above, is settings and can be ignored. `schemaVersion` is the
 saved-data migration number (currently 9).
@@ -97,7 +101,7 @@ present when known.
 | `r`, `g`, `b` | number | the response colour, 0-1 |
 | `note` | string | the winner's note |
 | `reason` | string | award-reason text (`"Disenchant"`, `"Guild bank"`, ...); present only when the item was given for a reason rather than a response |
-| `votes` | number | council votes the winner had |
+| `votes` | number | council votes the winner had. **No longer written since 0.43.53**; present only on older rows and imported rows |
 | `epoch` | number | Unix seconds, server time |
 | `date`, `time` | string | `YYYY/MM/DD`, `HH:MM:SS`, UTC |
 | `instance` | string | instance name, in the recorder's game language |
@@ -133,7 +137,8 @@ A candidate: `status` (code above), `response` / `responseID` / `r`,`g`,`b` (but
 answer) or `responseCode`, `note`, `roll` (1-100) and `rollBy` (`"player"` rolled it,
 `"leader"` generated it), `ilvl` (their average equipped item level), `diff` (item-level
 gain over what they wear in that slot), `gear1`/`gear2` (their equipped item(s) in that
-slot), `viaWhisper` (answered by whisper), `votes` (list of voter names).
+slot) and `viaWhisper` (answered by whisper). Snapshots written before 0.43.53 can also
+carry `votes` (a list of voter names); SLC no longer records or reads it.
 
 ### Alternative: CSV
 
@@ -144,7 +149,8 @@ slot), `viaWhisper` (answered by whisper), `votes` (list of voter names).
 id,date,time,source,winner,owner,item,itemLink,response,votes,instance,difficulty,boss,delivered,note,reason,coin,encounterID,guild,recorder
 ```
 
-Pipes in `itemLink` are doubled. New columns are only ever appended.
+Pipes in `itemLink` are doubled. New columns are only ever appended. The `votes` column
+is kept so the header never changes; it is empty for awards made since 0.43.53.
 
 ---
 

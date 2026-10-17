@@ -1,4 +1,4 @@
--- SimpleLootCouncil 0.43.49 - sample of WTF\Account\<ACCOUNT>\SavedVariables\SimpleLootCouncil.lua
+-- SimpleLootCouncil 0.43.53 - sample of WTF\Account\<ACCOUNT>\SavedVariables\SimpleLootCouncil.lua
 -- Only the history tables are shown; the real file holds many other settings keys.
 -- Names, items and times are illustrative; the shape and value types are exact.
 -- Every field is described in SLC_Data_Guide.md next to this file.
@@ -28,7 +28,6 @@ SimpleLootCouncilDB = {
             ["g"] = 0.8,
             ["b"] = 0.2,
             ["note"] = "2pc tier with this",
-            ["votes"] = 3,
             ["date"] = "2026/10/15",
             ["time"] = "03:42:11",
             ["epoch"] = 1792105331,
@@ -53,7 +52,6 @@ SimpleLootCouncilDB = {
             ["winner"] = "Velune-Area52",
             ["owner"] = "Velune-Area52",
             ["responseCode"] = "PASS",
-            ["votes"] = 0,
             ["date"] = "2026/10/15",
             ["time"] = "03:43:22",
             ["epoch"] = 1792105402,
@@ -79,7 +77,6 @@ SimpleLootCouncilDB = {
             ["owner"] = "Morvessa-Zul'jin",
             ["responseCode"] = "PASS",
             ["reason"] = "Disenchant",
-            ["votes"] = 0,
             ["date"] = "2026/10/15",
             ["time"] = "03:44:20",
             ["epoch"] = 1792105460,
@@ -165,7 +162,6 @@ SimpleLootCouncilDB = {
                     ["ilvl"] = 441,
                     ["diff"] = 13,
                     ["gear1"] = "item:202465::::::::90:263::6:4:7981:9380:6652:1498:::::",
-                    ["votes"] = { "Morvessa-Zul'jin", "Thalwyn-Area52", "Velune-Area52" },
                 },
                 ["Velune-Area52"] = {
                     ["status"] = "RESPONDED",
@@ -176,12 +172,10 @@ SimpleLootCouncilDB = {
                     ["diff"] = 3,
                     ["roll"] = 57,
                     ["rollBy"] = "player",
-                    ["votes"] = {},
                 },
                 ["Morvessa-Zul'jin"] = {
                     ["status"] = "PASS",
                     ["responseCode"] = "PASS",
-                    ["votes"] = {},
                 },
             },
         },
