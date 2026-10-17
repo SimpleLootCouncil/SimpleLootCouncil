@@ -1,4 +1,4 @@
-# SimpleLootCouncil × wowaudit
+# SLC Data Guide
 
 Two things: where SimpleLootCouncil (SLC) keeps its loot history and what shape it has,
 and the file SLC now provides for the wowaudit desktop client to write sim data into.
