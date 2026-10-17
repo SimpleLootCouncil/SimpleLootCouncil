@@ -28,11 +28,11 @@ only, so a raid in progress is not on disk yet.
 When both editions are installed, SLC combines the two tables at login and writes the
 same combined table into both files at the next logout, so either file then holds the
 full history. A file the player stopped using can be older and incomplete, which is why
-you read all of them rather than picking one. To combine files:
+you read all of them rather than picking one. A file from before 0.43.49 can hold\nboth globals (the EllesmereUI file may also contain a stale `SimpleLootCouncilDB`), so\nread every table in each file whose name starts with `SimpleLootCouncilDB` or\n`EllesmereUISimpleLootCouncilDB`. To combine files:
 
 1. Take the union of `history` (and `imported`) rows across the files, keyed by `id`.
    The same `id` is the same award. If two copies differ, prefer the file with the
-   larger top-level `savedAt` (Unix seconds, written at logout).
+   larger top-level `savedAt` (Unix seconds, written at logout). Files written before\n   0.43.49 have no `savedAt`; treat them as older than any file that has one.
 2. Drop any `id` listed in the `deleted` table. `deleted.history[<id>]` and
    `deleted.imported[<id>]` hold the time the player deleted that row, and an older
    file can still contain it. Rows deleted this way are already gone from the combined
