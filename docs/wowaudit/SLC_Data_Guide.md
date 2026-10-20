@@ -110,13 +110,14 @@ winners are all named `Fakeone-Area52`.
 1. 20 recent rows, which stay live:
 
 ```
-/run local H,t=SimpleLootCouncil.History,GetServerTime() for i=1,20 do H:Record({id=(t-i*3600).."-f"..i,link="item:202616",winner="Fakeone-Area52",responseText="Mainspec",responseID=1,epoch=t-i*3600,boss="Fake Boss",encounterID=2688}) end
+/run local H,t=SimpleLootCouncil.History,GetServerTime() for i=1,20 do H:Record({id=(t-i*3600).."-f"..i,link="item:202616",winner="Fakeone-Area52",responseText="Mainspec",epoch=t-i*3600,boss="Fake Boss",encounterID=2688}) end
 ```
 
-2. 30 older rows, 43 to 130 days old, spread over several months:
+2. 30 older rows, 32 to 59 days old, which fall in two months (SLC deletes native rows older than
+60 days at login, by the "Keep award history for" setting, so older fakes would not last):
 
 ```
-/run local H,t=SimpleLootCouncil.History,GetServerTime() for i=1,30 do H:Record({id=(t-(40+i*3)*86400).."-o"..i,link="item:202616",winner="Fakeone-Area52",responseText="Mainspec",responseID=1,epoch=t-(40+i*3)*86400,boss="Fake Boss",encounterID=2688}) end
+/run local H,t=SimpleLootCouncil.History,GetServerTime() for i=1,30 do H:Record({id=(t-(31+i%29)*86400).."-o"..i,link="item:202616",winner="Fakeone-Area52",responseText="Mainspec",epoch=t-(31+i%29)*86400,boss="Fake Boss",encounterID=2688}) end
 ```
 
 3. Move everything older than 30 days into the archive. This only runs while the history
