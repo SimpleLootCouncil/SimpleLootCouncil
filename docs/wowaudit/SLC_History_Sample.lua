@@ -1,9 +1,14 @@
--- SimpleLootCouncil 0.43.53 - sample of WTF\Account\<ACCOUNT>\SavedVariables\SimpleLootCouncil.lua
+-- SimpleLootCouncil 0.43.94 - sample of WTF\Account\<ACCOUNT>\SavedVariables\SimpleLootCouncil.lua
 -- Only the history tables are shown; the real file holds many other settings keys.
 -- Names, items and times are illustrative; the shape and value types are exact.
 -- Every field is described in SLC_Data_Guide.md next to this file.
+-- HISTORY HAS TWO FORMS: `history` and `imported` below hold only the last 30 days as plain
+-- tables; everything older is in `historyArchive` as packed strings, and `historySnapshots`
+-- values are packed strings too. The full history is live + archived (guide, section 1a).
+-- The archive blob and the packed snapshot below are REAL game output (SLC 0.43.94) of the rows
+-- shown in the decoded form; SLC_Decode_Example.py unpacks them.
 SimpleLootCouncilDB = {
-    ["schemaVersion"] = 9,
+    ["schemaVersion"] = 10,
 
     -- Unix seconds of the last logout that wrote this file; the larger one is newer.
     ["savedAt"] = 1792180800,
@@ -139,9 +144,32 @@ SimpleLootCouncilDB = {
         },
     },
 
+    -- History older than 30 days, moved out of `history` and `imported`: one segment per UTC
+    -- month and part ("<YYYY-MM>.<part>", at most 1000 rows). A blob unpacks to
+    --   { h = { [id] = <a history row> }, i = { [id] = <an imported row> } }
+    -- with the rows exactly as above. `sum`, `sumV` and `token` are SLC's own cache: ignore them.
+    ["historyArchive"] = {
+        ["segs"] = {
+            ["2026-08.1"] = {
+                ["n"] = 3, ["nh"] = 2, ["ni"] = 1,
+                ["oldest"] = 1785000000, ["newest"] = 1785105402,
+                ["oh"] = 1785105331,
+                -- unpacks to { h = {2 history rows}, i = {1 imported row} }
+                ["blob"] = "xZM_b9NAGIfVsrGwsNABmYGNKPYl_pNbiovd2m0SAamgEmK43L2Jr73cmbPdtFUGdj4BbHRHQmLhK_BR2FhY6IKT1C2BqCpTb7P83t3vfd7nTn3-ce-BpoLiDU0ODkgtFoIzIrHlerY5WzXL_dTWkKVKZrALR3mnQ7jMUqD1LgDbzFShKQTTQwLB5cHe_oTK-FkTTyKewwgjEzmWg89Xy8TIaWDsYBu7Lc_CrYZnYsexEbaaLQ97ruNiCyOvLGu6sy2T5FUoWaG5HBqBBsJSQXJ4PUkmeoOza8QPIVU0WdtnPx6HhyqHbLXN-GDAaSHy4zi4E-R8BBGyygTYtIO-yrKXO-TkhGjyyMgTMCIQYqD0EFhUdp4TSWHvod8HrYtsXtFLCFNjYMYTXVDeF1CLQCtON8dcStDdxXgBKxsoL6ybbh052xXcOFjxk9P2NLtl2o2GVWt-XQtkmfg5SqmRc9DGmOdJeSPPwmHBBeuER2SUCjC2pl9-_2z92_vp-jC7YnvKvm56dRP5w7P17_NfOyCpKmQOOg7u3X57Zb9zNGYDN8v5WBEZE8168GYl1IWMWRUVtUrM3UumXTKCzTmABXOiypxIA1WalWB2EyLGx7Lml4O10U0ItMA7VGP5TypfX2C9nP_9q-cfD7Uq0h4_gbuLsrWrE3aP0_LVEM5iBoIfggb2szJ18O7LcnO2MsgyruTqn9JUHTRNVLM_Xw6pKr71tww3iXkWco658wJEIeGc8rXR_o-_yx761OYGRmgp91_n3BezLdH9QuwnikHw1O_1fgM=",
+            },
+        },
+        ["sum"] = {},
+        ["sumV"] = 1,
+        ["token"] = "...",
+        ["sweptAt"] = 1792180000,
+    },
+
     -- The council as it stood when each item was awarded, keyed "<runId>:<session>",
-    -- joined to a history row by that pair. Kept 60 days.
+    -- joined to a history row by that pair. Kept 60 days. Normally each value is a packed string
+    -- "z<capture epoch>:<blob>"; the blob unpacks to the snapshot table shown in the second entry.
     ["historySnapshots"] = {
+        ["1785105290-1:2"] = "z1785105331:fZDPTsJAEMYj3ky8iyceQJK20H97ISVboCDgv6iJ8bC0U7qwbsluK4H04N0n0KMXjVcTEx_BR_EZuFgQOXhwbvPNN_P7Mq-YUT6-HGU-946rKGvRBG6QpmiGaqB12QrSjApCBtKRaVsqsiuWggxD15BatS1kmYaJVKRZua1qrlay6MrlQSooH5awABJMGEngOosy4cIk9qP9UXj_1gHuxylPQHi4uHOHB7GUFx0ynxNBDkpJBKUWMBbGYgiBu3IWmhKkpDEvuPGUg-idRYRNZ7zs5BBda0wpX6p1QcZjUvYYowHhrki5FxyqpqWriq7ZSllt-4QH-SwB-fTH_YIDGoa7zmBR-3xY1iOm7JYVtz4csZEaMiFJKr0T9_So38MubguQk5hL8PCWM1zUvn58rV-51SWUywn43XNgKYd14GcsYsb27DXivbFs67NG_q4ZiP8ohVXM7Q2g2Q_D5f1v",
+        -- The same shape as a table: what a build before 0.43.84 wrote (a blob unpacks to this shape).
         ["1792105290-1:2"] = {
             ["runId"] = "1792105290-1",
             ["session"] = 2,

@@ -2,8 +2,14 @@
 
 Two things: where SimpleLootCouncil (SLC) keeps its loot history and what shape it has,
 and the file SLC now provides for the wowaudit desktop client to write sim data into.
-Written for SLC 0.43.53. [`SLC_History_Sample.lua`](SLC_History_Sample.lua), next to this file, is a complete
+Written for SLC 0.43.94 (saved-data schema 10). [`SLC_History_Sample.lua`](SLC_History_Sample.lua), next to this file, is a complete
 example of every table described here.
+
+> **Read this first: SLC history is stored in two forms.** Unlike RCLootCouncil, which keeps
+> everything as plain tables, SLC keeps the **last 30 days live** (`history`, `imported`) and
+> moves **older rows into compressed strings** (`historyArchive`, section 1a). The full
+> history is both. Reading only `history` loses everything older than 30 days, with no
+> error. (`/slc csv` always exports every row.)
 
 ---
 
@@ -33,24 +39,67 @@ both globals (the EllesmereUI file may also contain a stale `SimpleLootCouncilDB
 read every table in each file whose name starts with `SimpleLootCouncilDB` or
 `EllesmereUISimpleLootCouncilDB`. To combine files:
 
-1. Take the union of `history` (and `imported`) rows across the files, keyed by `id`.
-   The same `id` is the same award. If two copies differ, prefer the file with the
+1. Take the union of `history` (and `imported`) rows across the files, keyed by `id`,
+   after unpacking each file's archive (section 1a). The same `id` is the same award. If two copies differ, prefer the file with the
    larger top-level `savedAt` (Unix seconds, written at logout). Files written before
    0.43.49 have no `savedAt`; treat them as older than any file that has one.
 2. Drop any `id` listed in the `deleted` table. `deleted.history[<id>]` and
    `deleted.imported[<id>]` hold the time the player deleted that row, and an older
    file can still contain it. Rows deleted this way are already gone from the combined
    table SLC writes, so this only matters for an older file.
-Three keys matter:
+Keys that matter:
 
 | Key | What it holds |
 |---|---|
-| `history` | SLC's own awards, one row per item awarded, keyed by the row's `id` |
-| `imported` | history imported from RCLootCouncil, Loothing or a pasted CSV; same row shape plus `source`. Never mixed into `history` |
-| `historySnapshots` | the whole council as it stood when each item was awarded (every candidate's answer, roll, item level), keyed `"<runId>:<session>"`. Kept 60 days |
+| `history` | SLC's own awards from the last 30 days, one row per item awarded, keyed by the row's `id`. Older rows are in `historyArchive` |
+| `imported` | history imported from RCLootCouncil, Loothing or a pasted CSV, last 30 days; same row shape plus `source`. Never mixed into `history`. Older rows are in `historyArchive` |
+| `historyArchive` | every `history` and `imported` row older than 30 days, packed by month (section 1a) |
+| `historySnapshots` | the whole council as it stood when each item was awarded (every candidate's answer, roll, item level), keyed `"<runId>:<session>"`. Kept 60 days. Each value is a packed string (section 1a) or, from an older build, a plain table |
 
-The rest of the table, apart from `savedAt` and `deleted` above, is settings and can be ignored. `schemaVersion` is the
-saved-data migration number (currently 9).
+The rest of the table, apart from `savedAt` above, is settings and can be ignored. `schemaVersion` is the
+saved-data migration number (currently 10).
+
+### 1a. Packed data: the archive and snapshots
+
+Rows older than 30 days live in `historyArchive.segs`, one segment per month
+(`"2026-08.1"`), each with a `blob`. Nothing is dropped: every row is in the live table or
+in a blob. Read both.
+
+**Unpacking a blob** (checked against real game output on 12.1.5, SLC 0.43.94):
+1. base64-decode, **URL-safe alphabet** (`-` and `_`), `=` padded;
+2. inflate as **raw Deflate** (no zlib header: Python `zlib.decompress(data, -15)`);
+3. CBOR-decode. **Lua strings come out as CBOR byte strings**: read them as UTF-8 text.
+
+In game, `C_EncodingUtil` does all three (`DecodeBase64`, `DecompressString`,
+`DeserializeCBOR`). [`SLC_Decode_Example.py`](SLC_Decode_Example.py) is a complete reader in
+Python's standard library, with two real blobs that it checks; the same blobs are in
+`SLC_History_Sample.lua`.
+
+An unpacked blob is `{ h = { [id] = row }, i = { [id] = row } }`: `h` holds `history` rows and
+`i` holds `imported` rows, each exactly as described below. Full history is `history` plus
+every segment's `h`, and `imported` plus every segment's `i`. Ignore the other
+`historyArchive` keys (`sum`, `token`, ...): they are SLC's own cache.
+
+`historySnapshots` values are packed the same way: `"z<epoch>:<blob>"`, the blob being
+everything after the first `:`. A value that is a plain table is a snapshot as it stands.
+
+### 1b. Handling both forms in one place
+
+Put the two forms behind one function so the rest of the tool never knows. For each saved
+file:
+
+1. Parse the file (the whole `SimpleLootCouncilDB` / `EllesmereUISimpleLootCouncilDB` table).
+2. Start with every `historyArchive.segs[*].blob`, unpacked: add each segment's `h` rows
+   (history) and `i` rows (imported) to a map keyed by `id`. A blob that fails to unpack is
+   skipped.
+3. Then add the live `history` and `imported` rows over it. A row is normally in only one
+   form; if an `id` is in both, the live copy is the current one.
+4. Carry on with that single map exactly as you would with RCLootCouncil's table. Joining a
+   snapshot is `snapshot(db.historySnapshots[runId .. ":" .. session])`.
+
+That is `all_rows(db)` in `SLC_Decode_Example.py`: about ten lines. Nothing else about the
+rows differs between the forms, so once they are merged the rest of this guide applies
+unchanged.
 
 ### Things to know before reading it
 
@@ -142,7 +191,7 @@ carry `votes` (a list of voter names); SLC no longer records or reads it.
 
 ### Alternative: CSV
 
-`/slc csv` in game opens a copyable export of the same history with this header (`,` or
+`/slc csv` in game opens a copyable export of the same history, live and archived together, with this header (`,` or
 `;` separated, the user's choice):
 
 ```
