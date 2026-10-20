@@ -101,6 +101,45 @@ That is `all_rows(db)` in `SLC_Decode_Example.py`: about ten lines. Nothing else
 rows differs between the forms, so once they are merged the rest of this guide applies
 unchanged.
 
+### 1c. Generating test history
+
+To try a reader without a real raid history, these commands (typed into the game's chat
+box, one at a time, in either edition) add fake rows and then archive them. The fake
+winners are all named `Fakeone-Area52`.
+
+1. 20 recent rows, which stay live:
+
+```
+/run local H,t=SimpleLootCouncil.History,GetServerTime() for i=1,20 do H:Record({id=(t-i*3600).."-f"..i,link="item:202616",winner="Fakeone-Area52",responseText="Mainspec",responseID=1,epoch=t-i*3600,boss="Fake Boss",encounterID=2688}) end
+```
+
+2. 30 older rows, 43 to 130 days old, spread over several months:
+
+```
+/run local H,t=SimpleLootCouncil.History,GetServerTime() for i=1,30 do H:Record({id=(t-(40+i*3)*86400).."-o"..i,link="item:202616",winner="Fakeone-Area52",responseText="Mainspec",responseID=1,epoch=t-(40+i*3)*86400,boss="Fake Boss",encounterID=2688}) end
+```
+
+3. Move everything older than 30 days into the archive. This only runs while the history
+window is closed and you are out of combat:
+
+```
+/run SimpleLootCouncil.History:SweepNow(true)
+```
+
+4. `/reload`, so the game writes the saved file. `SimpleLootCouncil.lua` (or
+`EllesmereUISimpleLootCouncil.lua`) now holds 20 rows in `history` and 30 rows packed in
+`historyArchive`. (Without step 3 SLC archives them itself about 20 seconds after a login.)
+`/slc history` shows all 50.
+
+5. When finished, delete every fake row, live and archived, and `/reload`:
+
+```
+/run local H,d=SimpleLootCouncil.History,{} for _,e in pairs(H:GetAll()) do if e.winner:find("^Fake") then d[#d+1]=e.id end end H:DeleteEntries(d)
+```
+
+Checked in game on SLC 0.43.94: steps 1 to 3 gave 20 live and 30 archived rows, 50 visible in
+the history browser, and step 5 left none of either.
+
 ### Things to know before reading it
 
 - **Deduplicate by `id`.** The loot master shares each history row with the group, so
