@@ -1,4 +1,4 @@
--- SimpleLootCouncil 0.43.94 - sample of WTF\Account\<ACCOUNT>\SavedVariables\SimpleLootCouncil.lua
+-- SimpleLootCouncil 0.44.17 - sample of WTF\Account\<ACCOUNT>\SavedVariables\SimpleLootCouncil.lua
 -- Only the history tables are shown; the real file holds many other settings keys.
 -- Names, items and times are illustrative; the shape and value types are exact.
 -- Every field is described in SLC_Data_Guide.md next to this file.
@@ -8,7 +8,7 @@
 -- The archive blob and the packed snapshot below are REAL game output (SLC 0.43.94) of the rows
 -- shown in the decoded form; SLC_Decode_Example.py unpacks them.
 SimpleLootCouncilDB = {
-    ["schemaVersion"] = 10,
+    ["schemaVersion"] = 12,
 
     -- Unix seconds of the last logout that wrote this file; the larger one is newer.
     ["savedAt"] = 1792180800,
@@ -46,6 +46,7 @@ SimpleLootCouncilDB = {
             ["delivered"] = true,
             ["runId"] = "1792105290-1",
             ["session"] = 2,
+            ["editedAt"] = 1792105400,
             ["awardSeq"] = 1,
             ["guild"] = "Example Guild",
             ["recorder"] = "Thalwyn-Area52",
@@ -70,6 +71,7 @@ SimpleLootCouncilDB = {
             ["delivered"] = true,
             ["runId"] = "1792105290-1",
             ["session"] = 3,
+            ["editedAt"] = 1792105400,
             ["awardSeq"] = 1,
             ["guild"] = "Example Guild",
             ["recorder"] = "Thalwyn-Area52",
@@ -95,6 +97,7 @@ SimpleLootCouncilDB = {
             ["delivered"] = false,
             ["runId"] = "1792105290-1",
             ["session"] = 4,
+            ["editedAt"] = 1792105400,
             ["awardSeq"] = 1,
             ["guild"] = "Example Guild",
             ["recorder"] = "Thalwyn-Area52",
@@ -169,7 +172,8 @@ SimpleLootCouncilDB = {
     -- "z<capture epoch>:<blob>"; the blob unpacks to the snapshot table shown in the second entry.
     ["historySnapshots"] = {
         ["1785105290-1:2"] = "z1785105331:fZDPTsJAEMYj3ky8iyceQJK20H97ISVboCDgv6iJ8bC0U7qwbsluK4H04N0n0KMXjVcTEx_BR_EZuFgQOXhwbvPNN_P7Mq-YUT6-HGU-946rKGvRBG6QpmiGaqB12QrSjApCBtKRaVsqsiuWggxD15BatS1kmYaJVKRZua1qrlay6MrlQSooH5awABJMGEngOosy4cIk9qP9UXj_1gHuxylPQHi4uHOHB7GUFx0ynxNBDkpJBKUWMBbGYgiBu3IWmhKkpDEvuPGUg-idRYRNZ7zs5BBda0wpX6p1QcZjUvYYowHhrki5FxyqpqWriq7ZSllt-4QH-SwB-fTH_YIDGoa7zmBR-3xY1iOm7JYVtz4csZEaMiFJKr0T9_So38MubguQk5hL8PCWM1zUvn58rV-51SWUywn43XNgKYd14GcsYsb27DXivbFs67NG_q4ZiP8ohVXM7Q2g2Q_D5f1v",
-        -- The same shape as a table: what a build before 0.43.84 wrote (a blob unpacks to this shape).
+        -- The older form, as a table: no , link/boss/encounterID/owner at the top, and each candidate
+        -- carries its own response text and r/g/b. The blob above unpacks to this shape (SLC 0.43.94).
         ["1792105290-1:2"] = {
             ["runId"] = "1792105290-1",
             ["session"] = 2,
@@ -207,5 +211,30 @@ SimpleLootCouncilDB = {
                 },
             },
         },
-    },
+        -- The current form (`v = 2`, SLC 0.43.84 and later), here as a plain table; SLC stores it packed.
+        -- No link/boss/owner: join the history row for those. Button words and colours sit once in `responses`.
+        ["1792105290-1:3"] = {
+            ["v"] = 2,
+            ["runId"] = "1792105290-1",
+            ["epoch"] = 1792105402,
+            ["winner"] = "Brakka-Illidan",
+            ["count"] = 2,
+            ["responses"] = {
+                [1] = { ["text"] = "Mainspec", ["color"] = "33cc33" },
+                [2] = { ["text"] = "Offspec", ["color"] = "ff9919" },
+            },
+            ["candidates"] = {
+                ["Brakka-Illidan"] = {
+                    ["responseID"] = 1,
+                    ["note"] = "2pc tier with this",
+                    ["ilvl"] = 441,
+                    ["diff"] = 13,
+                    ["gear1"] = "item:202465::::::::90:263::6:4:7981:9380:6652:1498:::::",
+                },
+                ["Morvessa-Zul'jin"] = {
+                    ["responseCode"] = "PASS",
+                    ["status"] = "PASS",
+                },
+            },
+        },    },
 }

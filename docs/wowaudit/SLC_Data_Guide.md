@@ -2,7 +2,7 @@
 
 Two things: where SimpleLootCouncil (SLC) keeps its loot history and what shape it has,
 and the file SLC provides, inside its own folder, for the wowaudit desktop client to write sim data into.
-Written for SLC 0.43.94 (saved-data schema 10); the sim-data file in section 2 is current as of 0.44.17. [`SLC_History_Sample.lua`](SLC_History_Sample.lua), next to this file, is a complete
+Written for SLC 0.44.17 (saved-data schema 12). [`SLC_History_Sample.lua`](SLC_History_Sample.lua), next to this file, is a complete
 example of every table described here.
 
 > **Read this first: SLC history is stored in two forms.** Unlike RCLootCouncil, which keeps
@@ -57,7 +57,7 @@ Keys that matter:
 | `historySnapshots` | the whole council as it stood when each item was awarded (every candidate's answer, roll, item level), keyed `"<runId>:<session>"`. Kept 60 days. Each value is a packed string (section 1a) or, from an older build, a plain table |
 
 The rest of the table, apart from `savedAt` above, is settings and can be ignored. `schemaVersion` is the
-saved-data migration number (currently 10).
+saved-data migration number (currently 12; migrations 11 and 12 only reset and translate settings, so the history shapes below are the same as at 10).
 
 ### 1a. Packed data: the archive and snapshots
 
@@ -206,6 +206,7 @@ present when known.
 | `runId` | string | the loot run the award belongs to |
 | `session` | number | the item's index in that run; with `runId` it finds the snapshot |
 | `awardSeq` | number | award sequence number (internal; a re-award gets a higher one) |
+| `editedAt` | number | Unix seconds of the last edit to this row (stamped on every record and edit; between two copies of a row, the larger one is newer) |
 | `guild` | string | the guild of the character that stored this copy |
 | `recorder` | string | `Name-Realm` of the character that stored this copy |
 
@@ -214,21 +215,36 @@ name), `isAwardReason` (boolean) and `mapID`; their `delivered` is absent (unkno
 
 ### A `historySnapshots` entry
 
+A snapshot is stored in one of two formats, told apart by `v`. Current builds write
+`v = 2` (builds before 0.43.84 wrote the older form; SLC converts those at login, but an
+old file may still hold some, so read both).
+
+**`v = 2`** (current) holds only what the history row does not:
+
 | Field | Type | Meaning |
 |---|---|---|
-| `runId`, `session` | string, number | as on the history row |
-| `epoch` | number | when it was captured |
-| `link`, `boss`, `encounterID`, `owner`, `winner` | | as on the history row |
+| `v` | number | `2` |
+| `runId`, `epoch` | string, number | the run and when it was captured. `session` is in the key, not the value |
+| `winner` | string | `Name-Realm` of the winner |
 | `count` | number | number of candidates |
 | `candidates` | table | `Name-Realm` → candidate |
+| `responses` | table | button position → `{ text, color }`; `color` is a `"rrggbb"` hex string. Each button's words are stored once here, not per candidate |
 
-A candidate: `status` (code above), `response` / `responseID` / `r`,`g`,`b` (button
-answer) or `responseCode`, `note`, `roll` (1-100) and `rollBy` (`"player"` rolled it,
-`"leader"` generated it), `ilvl` (their average equipped item level), `diff` (item-level
-gain over what they wear in that slot), `gear1`/`gear2` (their equipped item(s) in that
-slot) and `viaWhisper` (answered by whisper). Snapshots written before 0.43.53 can also
-carry `votes` (a list of voter names); SLC no longer records or reads it.
+The item link, boss, `encounterID`, `owner` and award reason are **not** in a `v = 2`
+snapshot: take them from the history row you joined it to.
 
+A `v = 2` candidate: `responseID` (look it up in `responses` for the label and colour),
+`responseCode` (only when there was no button answer, see the codes above), `status`
+(absent when it is plain `RESPONDED`), `note`, `roll` (1-100) and `rollBy` (`"player"`
+rolled it, `"leader"` generated it), `ilvl` (their average equipped item level), `diff`
+(item-level gain over what they wear in that slot), `gear1`/`gear2` (their equipped
+item(s) in that slot) and `viaWhisper` (answered by whisper). An answer that is not a button
+(the BoE rule's) carries its own `response` text and `color` hex on the candidate instead.
+
+**Older form** (no `v`): the same table plus `session`, `link`, `boss`, `encounterID` and
+`owner` at the top, and each candidate carries its own `response` and `r`,`g`,`b` (0-1)
+instead of `responses`; `status = "RESPONDED"` is written out. Snapshots written before
+0.43.53 can also carry `votes` (a list of voter names); SLC no longer records or reads it.
 ### Alternative: CSV
 
 `/slc csv` in game opens a copyable export of the same history, live and archived together, with this header (`,` or
