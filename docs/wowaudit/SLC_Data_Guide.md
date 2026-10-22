@@ -1,8 +1,8 @@
 # SLC Data Guide
 
 Two things: where SimpleLootCouncil (SLC) keeps its loot history and what shape it has,
-and the file SLC now provides for the wowaudit desktop client to write sim data into.
-Written for SLC 0.43.94 (saved-data schema 10). [`SLC_History_Sample.lua`](SLC_History_Sample.lua), next to this file, is a complete
+and the file SLC provides, inside its own folder, for the wowaudit desktop client to write sim data into.
+Written for SLC 0.43.94 (saved-data schema 10); the sim-data file in section 2 is current as of 0.44.17. [`SLC_History_Sample.lua`](SLC_History_Sample.lua), next to this file, is a complete
 example of every table described here.
 
 > **Read this first: SLC history is stored in two forms.** Unlike RCLootCouncil, which keeps
@@ -247,17 +247,25 @@ is kept so the header never changes; it is empty for awards made since 0.43.53.
 
 ### Where
 
+SLC ships a `SimulationImport` folder inside its own addon folder, holding the one file the
+client writes. Which path depends on the player's edition:
+
 ```
-World of Warcraft\_retail_\Interface\AddOns\SimpleLootCouncil_SimulationImport\SLC_WoWAuditSimData.lua
+World of Warcraft\_retail_\Interface\AddOns\SimpleLootCouncil\SimulationImport\SLC_WoWAuditSimData.lua
+World of Warcraft\_retail_\Interface\AddOns\EllesmereUISimpleLootCouncil\SimulationImport\SLC_WoWAuditSimData.lua
 ```
 
-A folder of its own, beside SLC's. **The client creates the folder** and writes the one
-file; SLC ships neither. Both editions of SLC (the standalone `SimpleLootCouncil` and
-the EllesmereUI edition `EllesmereUISimpleLootCouncil`) load the file from there through
-their `.toc`, so no companion addon (and no RCLootCouncil) is needed. The folder holds
-no `.toc`, so it is not an addon: it never shows in the addon list, no addon manager
-touches it, and an SLC or EllesmereUI update never erases it. Both editions have been
-checked in game reading a test file from this folder (SLC 0.43.48).
+The first is the standalone addon (`SimpleLootCouncil`), the second the EllesmereUI edition
+(`EllesmereUISimpleLootCouncil`). Each edition loads the file from its own folder through its
+`.toc`, so nothing else (and no RCLootCouncil) needs to be installed. **SLC ships the folder and a
+placeholder file; the client overwrites the placeholder** (it does not need to create
+anything). The placeholder holds an empty `wishlistData` and no timestamp, so SLC never reads
+it as a dataset. Write to every edition that is installed.
+
+An SLC or EllesmereUI update replaces the addon folder, so the file is reset to the
+placeholder. SLC keeps the newest dataset it has read in its saved variables and uses that
+copy until a newer file is loaded, so an update loses nothing, but the client should write the
+file again on its next run.
 
 ### Format
 
@@ -297,6 +305,8 @@ SLC_WoWAuditSimData = {
 1. **When to write**: SLC is installed when either
    `Interface\AddOns\SimpleLootCouncil\SimpleLootCouncil.toc` (the standalone addon) or
    `Interface\AddOns\EllesmereUISimpleLootCouncil\EllesmereUISimpleLootCouncil.toc` (SLC's
-   EllesmereUI edition) exists. Either way, write the one path above.
-2. **Create `SimpleLootCouncil_SimulationImport`** when it is missing. Put nothing in it
-   but `SLC_WoWAuditSimData.lua` — in particular no `.toc`.
+   EllesmereUI edition) exists. Overwrite `SimulationImport\SLC_WoWAuditSimData.lua` in each
+   folder that exists.
+2. **Replace the whole file.** Keep the folder as it is: add no `.toc` and no other files.
+3. **Write it again after an update.** An SLC or EllesmereUI update resets the file to the
+   placeholder (SLC's saved copy covers the gap until then).
