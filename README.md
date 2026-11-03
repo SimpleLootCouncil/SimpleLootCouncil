@@ -7,7 +7,7 @@
   <a href="https://simplelootcouncil.github.io/#commands"><img src="media/button-commands.png" alt="Commands"></a>
 </p>
 
-**SimpleLootCouncil** is a loot council for **Retail and Forever** raids. Where there is no master looter, the council votes on items sitting in a raider's bags inside the two-hour trade window. Raiders answer, the council votes, the loot master awards, and the holder's trade window fills itself.
+**SimpleLootCouncil** is a loot council for **Retail and Forever** raids. Where there is no Master Looter, the council votes on items sitting in a raider's bags inside the four-hour trade window. Raiders answer, the council votes, the Loot Master awards, and the holder's trade window fills itself.
 
 <p align="center"><img src="media/bulletproof-loot-sessions.png" alt="Bulletproof Loot Sessions"></p>
 
@@ -15,7 +15,7 @@
 
 Votes happen on items still inside their trade window. When an item is awarded, its holder is told, and opening a trade with the winner fills it automatically. An award only counts as **delivered** once the item has actually changed hands.
 
-On **WoW Forever**, master loot is back. The loot master holds the drop, the council votes the same way, and the item goes straight to the winner.
+On **WoW Forever**, the Master Looter loot method is back. The Master Looter is the Loot Master: the drop goes to their bags, the council votes the same way, and a trade hands it to the winner.
 
 ## Light on Screen Space
 
@@ -23,18 +23,19 @@ SimpleLootCouncil gives you compact frame options for the council voting frame a
 
 ## Performant at Any Scale
 
-Answers from a 40-player raid cost about 0.04 ms each. The council table redraws in place, at most a few times a second, and addon messages are paced so other addons are never crowded out.
+Answers from a 40-player raid cost about 0.04 ms each, so a full raid's answers never stall your game, and closed windows cost almost nothing.
 
 ## Bring Your History
 
-Import award history from RCLootCouncil or Loothing, from saved data or a pasted CSV, so your council isn't starting blind.
+Import award history from RCLootCouncil or Loothing by pasting a CSV export, so your council isn't starting blind.
 
 ## Features
 
 - Live council voting
 - Custom response buttons
 - Council by name or guild rank
-- Loot master delegation
+- Loot from council members' bags, with sessions the council can request or start
+- Loot Master promotion, remembered for your next raid
 - Autopass on unusable gear
 - Equipped-gear and tier-set comparison
 - Bonus-roll tracking
@@ -43,28 +44,25 @@ Import award history from RCLootCouncil or Loothing, from saved data or a pasted
 - Raid team view by guild rank
 - Attendance
 - CSV export
-- WowUtils wishlist support
+- WowUtils, Guilds of WoW and wowaudit wishlist support
 - SimulationCraft export
+- Settings search, window opacity and window scale
 
 ## Languages
 
-SimpleLootCouncil runs on every World of Warcraft client language: rolls are read from chat, plurals and punctuation follow your language, and Cyrillic, Korean and Chinese text draws in the right font.
+SimpleLootCouncil runs on every World of Warcraft client language: rolls work in every language, plurals and punctuation follow your language, and Cyrillic, Korean and Chinese text draws in the right font.
 
 English (enUS, enGB) · Deutsch (deDE) · Français (frFR) · Español (esES, esMX) · Italiano (itIT) · Português (ptBR) · Русский (ruRU) · 한국어 (koKR) · 简体中文 (zhCN) · 繁體中文 (zhTW)
 
-All interface text is English for now. Full translation is the next goal for SLC, but making sure it ran on every client localization was a top priority.
-
-Every string is ready to translate. Translators are deeply desired, and any interested parties are encouraged to join the [Discord](https://discord.gg/simplelootcouncil)!
-
-## SimpleLootCouncil is currently in public beta testing, if you encounter issues please report them.
+The interface is translated into every language above. Not every translation has been checked by a native speaker yet, so translators are deeply desired, and any interested parties are encouraged to join the [Discord](https://discord.gg/simplelootcouncil)!
 
 ## Getting Started
 
-Install it with WowUp: **Install from URL** with this repo's address. Everyone who takes part needs it. The group leader runs loot by default. Add your council with `/slc council add Name-Realm`, and type `/slc` for settings or `/slc help` for every command.
+Install it from [CurseForge](https://www.curseforge.com/wow/addons/simplelootcouncil) or [Wago](https://addons.wago.io/addons/simplelootcouncil), or with WowUp: **Install from URL** with this repo's address. Everyone who takes part needs it. The group leader is the Loot Master by default. Add your council with `/slc council add Name-Realm`, and type `/slc` for settings or `/slc help` for every command. The [feature guide](https://simplelootcouncil.github.io/) covers the rest.
 
 ## Support
 
-Found a bug? [Open an issue](https://github.com/SimpleLootCouncil/SimpleLootCouncil/issues/new/choose) with your version and what `/slc log` shows.
+Found a bug? Type `/slc log level verbose`, make it happen again, then [open an issue](https://github.com/SimpleLootCouncil/SimpleLootCouncil/issues/new/choose) with your version and what `/slc log` shows.
 
 SimpleLootCouncil is free. If it saves your raid some arguing, you can support its development on [Ko-fi](https://ko-fi.com/laxxz).
 

@@ -6,8 +6,8 @@ body:
     id: version
     attributes:
       label: SLC version
-      description: Shown at the top of `/slc help`, or in WowUp.
-      placeholder: "0.42.21"
+      description: Shown at the top right of the `/slc` settings window, in `/slc version`, or in WowUp.
+      placeholder: "1.0.0"
     validations:
       required: true
   - type: dropdown
@@ -41,5 +41,5 @@ body:
     id: log
     attributes:
       label: /slc log
-      description: Type `/slc log` in game soon after it happens and paste what it shows. Any Lua error text (BugSack) helps too.
+      description: Type `/slc log level verbose` in game, make the problem happen again, then type `/slc log` and paste what it shows. `/slc log level quiet` turns the extra logging off again. Any Lua error text (BugSack) helps too.
       render: text
